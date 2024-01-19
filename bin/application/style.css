@@ -1,0 +1,47 @@
+/* style.css */
+
+#root {
+    -fx-background-color: #f0f0f0;
+}
+
+#title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+}
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.text-field {
+    -fx-font-size: 14px;
+    -fx-pref-width: 200px;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-pref-width: 100px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.web-view {
+    -fx-pref-height: 400px;
+    -fx-pref-width: 800px;
+}
+
+#back-button {
+    -fx-font-size: 14px;
+    -fx-pref-width: 80px;
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+#back-button:hover {
+    -fx-background-color: #c0392b;
+}

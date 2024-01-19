@@ -53,28 +53,5 @@ public class Graph {
         Collections.reverse(path);
         return path;
     }
-
-    public static void main(String[] args) {
-        String filename = "cerrik.csv";
-        String filenam = "cerrik_list.csv";
-        
-        Map<String, Node> nodes = Node.loadNodesFromCSV(filename, filenam, streetNameMap);
-
-        // Example usage
-        Node startNode = nodes.get("1");
-        Node endNode = nodes.get("10");
-
-        if (startNode != null && endNode != null) {
-            List<String> path = aStar(startNode, endNode);
-
-            if (path != null) {
-                System.out.println("Shortest Path: " + String.join(" -> ", path));
-            } else {
-                System.out.println("No path found.");
-            }
-        } else {
-            System.out.println("Start or end node not found.");
-        }
-    }
 }
 

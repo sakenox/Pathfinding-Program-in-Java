@@ -1,31 +1,23 @@
 package application;
-	
-import java.util.Arrays;
+
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.web.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.stream.Collectors;
-import java.io.UnsupportedEncodingException;
 
 public class Main extends Application {
+	
 	private String GOOGLE_MAPS_URL = "https://www.google.com/maps/dir/";
     String filename = "cerrik.csv";
     String filenam = "cerrik_list.csv";
@@ -33,14 +25,8 @@ public class Main extends Application {
 
     public static String formatAddressForGoogleMaps(String streetName) {
         try {
-            // Replace spaces with '+'
             String formattedStreetName = streetName.replace(" ", "+");
-
-            // Append ",+Tokyo,+Japan" to the address
             String formattedAddress = formattedStreetName + ",+Cërrik,+Shqipëria/";
-
-            // URL encode the entire address
-           // return URLEncoder.encode(formattedAddress, "UTF-8");
             return formattedAddress;
 
         } catch (Exception e) {
@@ -51,9 +37,6 @@ public class Main extends Application {
     }
 	public void openGoogleMaps(Stage primaryStage, TextField startTextField, TextField endTextField) {
         primaryStage.setTitle("Google Maps Viewer");
-
-        // Replace with your source and destination coordinates
-
         
         Map<String, Node> nodes = Node.loadNodesFromCSV(filename, filenam, streetNameMap);
 
@@ -74,27 +57,17 @@ public class Main extends Application {
                 	GOOGLE_MAPS_URL += formatAddressForGoogleMaps(street);
                 }
                 System.out.println("Constructed URL: " + GOOGLE_MAPS_URL);
-
-            	//actiontarget.setText("Shortest Path: " + String.join(" -> ", path));
             } else {
             	//actiontarget.setText("No path found.");
             }
         } else {
         	//actiontarget.setText("Start or end node not found.");
         }
-        // Fetch directions from Google Maps Directions API
-        //waypoints = Arrays.asList("Tomorr Sinani");
-        //waypoints = Arrays.asList("San Jose, CA", "Fresno, CA");
-
         
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         webEngine.load(GOOGLE_MAPS_URL);
-        
-        //String directions = getDirections(source, destination, waypoints);
-        //System.out.println(directions);
-        //Label directionsLabel = new Label(directions);
 
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> start(primaryStage));
@@ -103,7 +76,6 @@ public class Main extends Application {
 
         BorderPane root = new BorderPane();
         root.setCenter(webView);
-        //root.setBottom(directionsLabel);
 
         BorderPane.setMargin(backButton, new Insets(10));
         BorderPane.setAlignment(backButton, javafx.geometry.Pos.BOTTOM_RIGHT);        
@@ -116,43 +88,6 @@ public class Main extends Application {
         webView.getEngine().reload();
 
 	}
-    
-    
-	public void stageTwo(Stage primaryStage, TextField startTextField, TextField endTextField) {
-        //ktu kalojm te window tjeter
-    	Pane pani = new Pane();
-    	Scene newScene = new Scene(pani,800,600);
-		final Text actiontarget = new Text();
-    	actiontarget.setFill(Color.FIREBRICK);
-
-        Map<String, Node> nodes = Node.loadNodesFromCSV(filename, filenam, streetNameMap);
-
-        // Example usage
-        Node startNode = nodes.get(startTextField.getText());
-        Node endNode = nodes.get(endTextField.getText());
-
-        if (startNode != null && endNode != null) {
-            List<String> path = Graph.aStar(startNode, endNode);
-
-            if (path != null) {
-                actiontarget.setText("Shortest Path: " + String.join(" -> ", path));
-            } else {
-            	actiontarget.setText("No path found.");
-            }
-        } else {
-        	actiontarget.setText("Start or end node not found.");
-        }
-		Button bt2n = new Button("Kthehu");
-        VBox vbox = new VBox(10);
-        vbox.getChildren().add(actiontarget);
-        vbox.getChildren().add(bt2n);
-        pani.getChildren().add(vbox);
-        vbox.setAlignment(Pos.CENTER);
-        bt2n.setOnAction(e -> start(primaryStage));
-		primaryStage.setScene(newScene);
-		primaryStage.show();
-		
-	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -160,27 +95,41 @@ public class Main extends Application {
 			primaryStage.setTitle("Gugëll Mapz");
 			
 			GridPane grid = new GridPane();
+			grid.setId("root"); 
+			
+			FileInputStream inputstream = new FileInputStream("geoguessr1.png"); 
+			Image image = new Image(inputstream); 
+			ImageView imageView = new ImageView(image);
+
+	        imageView.setFitHeight(210); // Set the height of the image
+	        imageView.setPreserveRatio(true);
+	        
+	        grid.add(imageView, 0, 0, 2, 1);
+	        Text scenetitle = new Text("Mirësevjen!");
+	        scenetitle.setId("title"); // Apply the title style
+			//scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+	        grid.add(scenetitle, 0, 1, 2, 1);
+	        
 			grid.setAlignment(Pos.CENTER);
 			grid.setHgap(10);
 			grid.setVgap(10);
 			grid.setPadding(new Insets(25, 25, 25, 25));
 			
-			Scene scene = new Scene(grid,800,600);
-			Text scenetitle = new Text("Mirësevjen!");
-			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-			grid.add(scenetitle, 0, 0, 2, 1);
+			Scene scene = new Scene(grid,400,400);
+			scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm()); // Link the CSS file
 			
+
 			Label userName = new Label("Nisja:");
-			grid.add(userName, 0, 1);
+			grid.add(userName, 0, 2);
 			
 			TextField startTextField = new TextField();
-			grid.add(startTextField, 1, 1);
+			grid.add(startTextField, 1, 2);
 			
 			Label pw = new Label("Mbërritja:");
-			grid.add(pw, 0, 2);
+			grid.add(pw, 0, 3);
 
 			TextField endTextField = new TextField();
-			grid.add(endTextField, 1, 2);
+			grid.add(endTextField, 1, 3);
 	        
 			Button btn = new Button("Navigo");
 			HBox hbBtn = new HBox(10);
