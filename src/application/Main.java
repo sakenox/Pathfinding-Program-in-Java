@@ -35,12 +35,12 @@ public class Main extends Application {
         }
         
     }
+    
 	public void openGoogleMaps(Stage primaryStage, TextField startTextField, TextField endTextField) {
         primaryStage.setTitle("Google Maps Viewer");
         
         Map<String, Node> nodes = Node.loadNodesFromCSV(filename, filenam, streetNameMap);
 
-        // Example usage
         Node startNode = streetNameMap.get(startTextField.getText());
         Node endNode = streetNameMap.get(endTextField.getText());
         
@@ -78,7 +78,7 @@ public class Main extends Application {
         root.setCenter(webView);
 
         BorderPane.setMargin(backButton, new Insets(10));
-        BorderPane.setAlignment(backButton, javafx.geometry.Pos.BOTTOM_RIGHT);        
+        BorderPane.setAlignment(backButton, Pos.BOTTOM_RIGHT);        
         root.setBottom(backButton);
 
         Scene scene = new Scene(root, 800, 600);
@@ -92,21 +92,20 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.setTitle("Gugëll Mapz");
+			primaryStage.setTitle("Gugëll Guesser");
 			
 			GridPane grid = new GridPane();
 			grid.setId("root"); 
-			
 			FileInputStream inputstream = new FileInputStream("geoguessr1.png"); 
 			Image image = new Image(inputstream); 
 			ImageView imageView = new ImageView(image);
 
-	        imageView.setFitHeight(210); // Set the height of the image
+	        imageView.setFitHeight(240);
 	        imageView.setPreserveRatio(true);
 	        
 	        grid.add(imageView, 0, 0, 2, 1);
 	        Text scenetitle = new Text("Mirësevjen!");
-	        scenetitle.setId("title"); // Apply the title style
+	        scenetitle.setId("title"); 
 			//scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 	        grid.add(scenetitle, 0, 1, 2, 1);
 	        
@@ -132,10 +131,8 @@ public class Main extends Application {
 			grid.add(endTextField, 1, 3);
 	        
 			Button btn = new Button("Navigo");
-			HBox hbBtn = new HBox(10);
-			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-			hbBtn.getChildren().add(btn);
-			grid.add(hbBtn, 1, 4);
+			grid.add(btn, 1, 4);
+			GridPane.setHalignment(btn, HPos.RIGHT);
 			
 			btn.setOnAction(e ->openGoogleMaps(primaryStage, startTextField, endTextField));			
 			primaryStage.setScene(scene);

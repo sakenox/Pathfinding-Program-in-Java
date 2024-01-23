@@ -11,7 +11,7 @@ import java.util.Map;
 public class Node {
     String street;
     List<Connection> connections;
-    double distanceFromStart; // Added this line
+    double distanceFromStart;
     double x,y;
     private static Map<String, Node> streetNameMap = new HashMap<>();
 
@@ -23,7 +23,6 @@ public class Node {
         this.y = y;
     }
     
-    // Method to get a node by street name
     public static Node getNodeByStreetName(String streetName) {
         return streetNameMap.get(streetName);
     }
@@ -36,14 +35,11 @@ public class Node {
         connections.add(new Connection(destination, distance));
     }
 
-    // Added this method to calculate heuristic (estimate to the goal)
+    // Metoda heuristike(estimate deri te fundi)
     public double heuristic(Node goal) {
-        // Assuming each node has coordinates (x, y) representing its position on a map
-        // Replace getX() and getY() with the actual methods to get the coordinates from your Node class
     	double dx = Math.abs(getX() - goal.getX());
     	double dy = Math.abs(getY() - goal.getY());
-
-        // Using Euclidean distance formula
+        // Distanca Eukulidiane
         return (double) Math.sqrt(dx * dx + dy * dy);
     }
     

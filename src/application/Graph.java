@@ -31,6 +31,8 @@ public class Graph {
 
                     if (tentativeDistance < neighbor.distanceFromStart || !queue.contains(neighbor)) {
                         neighbor.distanceFromStart = tentativeDistance;
+                       // System.out.println(current.street);
+                       // System.out.println(neighbor.street);
                         parentMap.put(neighbor, current);
                         queue.add(neighbor);
                     }
